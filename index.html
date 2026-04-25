@@ -257,12 +257,12 @@ nav{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,rgba(8,6
 <nav>
   <span class="nav-brand">✦ LY ✦</span>
   <ul class="nav-links">
-    <li><a href="#" class="active" data-page="home">Welcome</a></li>
-    <li><a href="#" data-page="one">One Card</a></li>
-    <li><a href="#" data-page="three">Three Card</a></li>
-    <li><a href="#" data-page="celtic">Celtic Cross</a></li>
-    <li><a href="#" data-page="ball">Crystal Ball</a></li>
-    <li><a href="#" data-page="deck">The Deck</a></li>
+    <li><a href="#" id="nav-home" class="active" onclick="goTo('home');return false;">Welcome</a></li>
+    <li><a href="#" id="nav-one" onclick="goTo('one');return false;">One Card</a></li>
+    <li><a href="#" id="nav-three" onclick="goTo('three');return false;">Three Card</a></li>
+    <li><a href="#" id="nav-celtic" onclick="goTo('celtic');return false;">Celtic Cross</a></li>
+    <li><a href="#" id="nav-ball" onclick="goTo('ball');return false;">Crystal Ball</a></li>
+    <li><a href="#" id="nav-deck" onclick="goTo('deck');return false;">The Deck</a></li>
   </ul>
 </nav>
 
@@ -666,22 +666,17 @@ const CARDS = [
 const CELTIC_POS=["The Present","The Challenge","The Foundation","The Past","The Future","Near Future","Your Approach","External Influences","Hopes & Fears","The Outcome"];
 
 function goTo(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  document.querySelector('[data-page="'+id+'"]').classList.add('active');
+  var pages = document.querySelectorAll('.page');
+  for(var i=0;i<pages.length;i++) pages[i].classList.remove('active');
+  var navs = document.querySelectorAll('.nav-links a');
+  for(var i=0;i<navs.length;i++) navs[i].classList.remove('active');
+  var pg = document.getElementById('page-'+id);
+  if(pg) pg.classList.add('active');
+  var nav = document.getElementById('nav-'+id);
+  if(nav) nav.classList.add('active');
+  window.scrollTo(0,0);
 }
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.nav-links a').forEach(a=>{
-    a.addEventListener('click',e=>{e.preventDefault();goTo(a.dataset.page);});
-  });
-});
-// Also attach immediately in case DOM already loaded
-if(document.readyState !== 'loading') {
-  document.querySelectorAll('.nav-links a').forEach(a=>{
-    a.addEventListener('click',e=>{e.preventDefault();goTo(a.dataset.page);});
-  });
-}
+// nav uses onclick directly
 
 function toggleRules(s){
   const w=document.getElementById('rules-'+s+'-wrap');
